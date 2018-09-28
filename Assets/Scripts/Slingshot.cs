@@ -6,14 +6,14 @@ public class Slingshot : MonoBehaviour
 {
     [Header("Set in the Inspector")]
     public GameObject prefabProjectile;
-    public float velocityMult = 0f;
+    public float velocityMult = 8f;
 
     [Header("Set Dynamically")]
     public GameObject launchPoint;
     public Vector3 launchPos;
     public GameObject projectile;
     public bool aimingMode;
-    private Rigidbody projectileRigidBody;
+    private Rigidbody projectileRigidbody;
 
     void Awake()
     {
@@ -48,12 +48,9 @@ public class Slingshot : MonoBehaviour
         //Start it at the launchpoint
         projectile.transform.position = launchPos;
 
-        //Set it to iskinematic for now
-        projectile.GetComponent<Rigidbody>().isKinematic = true;
-
         //Set it to isKinematic for now
-        projectileRigidBody = projectile.GetComponent<Rigidbody>();
-        projectileRigidBody.isKinematic = true;
+        projectileRigidbody = projectile.GetComponent<Rigidbody>();
+        projectileRigidbody.isKinematic = true;
 
     }
 
@@ -82,12 +79,14 @@ public class Slingshot : MonoBehaviour
         Vector3 projPos = launchPos + mouseDelta;
         projectile.transform.position = projPos;
 
+
         if (Input.GetMouseButtonUp(0))
         //The mouse has been released
         {
             aimingMode = false;
-            projectileRigidBody.isKinematic = false;
-            projectileRigidBody.velocity = -mouseDelta* velocityMult;
+            projectileRigidbody.isKinematic = false;
+            projectileRigidbody.velocity = -mouseDelta * velocityMult;
+            FollowCam.POI = projectile;
             projectile = null;
         }
 
